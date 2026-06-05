@@ -5,6 +5,8 @@ Este programa analiza archivos FASTA, calcula estadísticas de secuencias
 y aplica filtros personalizados.
 """
 
+import argparse
+
 
 def parsear_argumentos():
     """
@@ -18,7 +20,33 @@ def parsear_argumentos():
     - min_gc: contenido GC mínimo (opcional)
     - max_gc: contenido GC máximo (opcional)
     """
-    pass
+    parser = argparse.ArgumentParser(
+        description="Analiza un archivo FASTA y escribe estadísticas en TSV"
+    )
+    parser.add_argument("-i", "--input", required=True, help="Archivo FASTA de entrada")
+    parser.add_argument("-o", "--output", required=True, help="Archivo TSV de salida")
+    parser.add_argument(
+        "--min-len", type=int, default=None, help="Longitud mínima de secuencia"
+    )
+    parser.add_argument(
+        "--max-len", type=int, default=None, help="Longitud máxima de secuencia"
+    )
+    parser.add_argument(
+        "--min-gc", type=float, default=None, help="Contenido GC mínimo (0-1)"
+    )
+    parser.add_argument(
+        "--max-gc", type=float, default=None, help="Contenido GC máximo (0-1)"
+    )
+
+    args = parser.parse_args()
+    return {
+        "input": args.input,
+        "output": args.output,
+        "min_len": args.min_len,
+        "max_len": args.max_len,
+        "min_gc": args.min_gc,
+        "max_gc": args.max_gc,
+    }
 
 
 def leer_fasta(ruta):
@@ -131,7 +159,15 @@ def escribir_resultados(stats, ruta):
 
     Incluye encabezado: encabezado, longitud, contenido_gc
     """
-    pass
+    try:
+        with open(ruta, "w") as archivo:
+            archivo.write("encabezado\tlongitud\tcontenido_gc\n")
+            for stat in stats:
+                archivo.write(
+                    f"{stat['encabezado']}\t{stat['longitud']}\t{stat['contenido_gc']}\n"
+                )
+    except IOError as error:
+        print(f"Error al escribir el archivo '{ruta}': {error}")
 
 
 def main():
