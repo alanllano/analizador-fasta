@@ -186,7 +186,12 @@ def main():
     args = parsear_argumentos()
 
     # Leer archivo FASTA
+    print(f"Leyendo archivo: {args['input']}")
     secuencias = leer_fasta(args["input"])
+
+    if not secuencias:
+        print("No se encontraron secuencias para procesar.")
+        return
 
     # Calcular estadísticas para cada secuencia
     estadisticas_todas = []
@@ -204,8 +209,8 @@ def main():
     escribir_resultados(estadisticas_filtradas, args["output"])
 
     # Mostrar resumen
-    print(f"Total de secuencias: {len(estadisticas_todas)}")
-    print(f"Secuencias que pasan filtros: {len(estadisticas_filtradas)}")
+    print(f"  {len(estadisticas_todas)} secuencias encontradas")
+    print(f"  {len(estadisticas_filtradas)} secuencias pasan los filtros")
     print(f"Resultados escritos en '{args['output']}'")
 
 
