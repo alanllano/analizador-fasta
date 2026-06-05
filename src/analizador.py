@@ -70,7 +70,11 @@ def calcular_gc(secuencia):
 
     Retorna un número entre 0 y 1.
     """
-    pass
+    if len(secuencia) == 0:
+        return 0.0
+
+    gc_count = secuencia.count("G") + secuencia.count("C")
+    return gc_count / len(secuencia)
 
 
 def calcular_estadisticas(encabezado, secuencia):
@@ -82,7 +86,11 @@ def calcular_estadisticas(encabezado, secuencia):
     - longitud
     - contenido_gc
     """
-    pass
+    return {
+        "encabezado": encabezado,
+        "longitud": len(secuencia),
+        "contenido_gc": round(calcular_gc(secuencia), 4),
+    }
 
 
 def pasa_filtros(stats, args):
