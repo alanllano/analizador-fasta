@@ -99,7 +99,30 @@ def pasa_filtros(stats, args):
 
     Retorna True si cumple, False si no.
     """
-    pass
+    longitud = stats["longitud"]
+    gc = stats["contenido_gc"]
+
+    # Filtro de longitud mínima
+    if "min_len" in args and args["min_len"] is not None:
+        if longitud < args["min_len"]:
+            return False
+
+    # Filtro de longitud máxima
+    if "max_len" in args and args["max_len"] is not None:
+        if longitud > args["max_len"]:
+            return False
+
+    # Filtro de GC mínimo
+    if "min_gc" in args and args["min_gc"] is not None:
+        if gc < args["min_gc"]:
+            return False
+
+    # Filtro de GC máximo
+    if "max_gc" in args and args["max_gc"] is not None:
+        if gc > args["max_gc"]:
+            return False
+
+    return True
 
 
 def escribir_resultados(stats, ruta):
